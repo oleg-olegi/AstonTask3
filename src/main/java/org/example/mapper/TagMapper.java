@@ -1,4 +1,7 @@
 package org.example.mapper;
 
-public class TagMapper {
+import org.mapstruct.Mapper;
+
+@Mapper
+public interface TagMapper {
 }

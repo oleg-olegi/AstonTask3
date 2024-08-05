@@ -1,4 +1,7 @@
 package org.example.mapper;
 
-public class PostMapper {
+import org.mapstruct.Mapper;
+
+@Mapper
+public interface PostMapper {
 }
