@@ -11,7 +11,7 @@ public class Tag {
     private int id;
     @Column
     private String name;
-    @ManyToMany
+    @ManyToMany(mappedBy = "tags")
     private List<Post> posts;
 
     public Tag() {

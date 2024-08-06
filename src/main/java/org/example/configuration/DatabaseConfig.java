@@ -23,7 +23,6 @@ public class DatabaseConfig {
     private final Environment env;
 
     public DatabaseConfig(Environment env) {
-        System.out.println("env created");
         this.env = env;
     }
 

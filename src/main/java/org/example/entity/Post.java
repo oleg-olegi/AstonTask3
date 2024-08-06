@@ -1,33 +1,48 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import org.example.entity.Author;
+import org.example.entity.Tag;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column
+    private Long id;
     private String title;
-    @Column
     private String content;
 
     @ManyToOne
-    private User user;
+    private Author author; // ManyToOne relationship
 
     @ManyToMany
-    private List<Tag> tags;
+    private List<Tag> tags; // Many2Many relationship
 
     public Post() {
     }
 
-    public Post(String title, String content, User user, List<Tag> tags) {
+    public Post(Long id, String title, String content, Author author) {
+        this.id = id;
         this.title = title;
         this.content = content;
-        this.user = user;
-        this.tags = tags;
+        this.author = author;
+    }
+
+    public Post(Long l, String testTitle, String testContent) {
+        this.id = l;
+        this.title = testTitle;
+        this.content = testContent;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -46,12 +61,12 @@ public class Post {
         this.content = content;
     }
 
-    public User getUser() {
-        return user;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public List<Tag> getTags() {
@@ -60,5 +75,29 @@ public class Post {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id) && Objects.equals(title, post.title) && Objects.equals(content, post.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, content);
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", author=" + author +
+                ", tags=" + tags +
+                '}';
     }
 }

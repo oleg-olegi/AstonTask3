@@ -1,8 +1,8 @@
 package org.example.controller;
 
-import org.example.dto.UserDTO;
+import org.example.dto.AuthorDTO;
 import org.example.exceptions.UserNotFoundException;
-import org.example.service.UserService;
+import org.example.service.AuthorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,22 +13,22 @@ import java.util.List;
 
 @RestController
 @RequestMapping(("/users"))
-public class UserController {
-    private final UserService userService;
+public class AuthorController {
+    private final AuthorService authorService;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthorController.class);
 
-    public UserController(UserService userService) {
+    public AuthorController(AuthorService authorService) {
         logger.info("UserController constructor");
-        this.userService = userService;
+        this.authorService = authorService;
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<?> getUserById(@PathVariable("id") long id) {
         try {
-            UserDTO userDTO = userService.getUserById(id);
-            logger.info("USER_CONTROLLER getUserById {}", userDTO.toString());
-            return ResponseEntity.ok(userDTO);
+            AuthorDTO authorDTO = authorService.getUserById(id);
+            logger.info("USER_CONTROLLER getUserById {}", authorDTO.toString());
+            return ResponseEntity.ok(authorDTO);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -37,33 +37,33 @@ public class UserController {
     @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<?> getAllUsers() {
         try {
-            List<UserDTO> userDTO = userService.getAllUsers();
+            List<AuthorDTO> authorDTO = authorService.getAllUsers();
             logger.info("USER_CONTROLLER getAllUsers");
-            return ResponseEntity.ok(userDTO);
+            return ResponseEntity.ok(authorDTO);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> createUser(@RequestBody AuthorDTO authorDTO) {
         try {
-            userService.createUser(userDTO);
-            logger.info("USER_CONTROLLER createUser {}", userDTO.toString());
+            authorService.createUser(authorDTO);
+            logger.info("USER_CONTROLLER createUser {}", authorDTO.toString());
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (UserNotFoundException e) {
-            logger.error("USER_CONTROLLER createUser {}", userDTO.toString());
+            logger.error("USER_CONTROLLER createUser {}", authorDTO.toString());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @PutMapping(value = "/update/{id}", consumes = "application/json")
-    public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody AuthorDTO authorDTO) {
         try {
-            logger.info("USER_CONTROLLER updateUser {}", userDTO.toString());
-            userService.updateUser(id, userDTO);
+            logger.info("USER_CONTROLLER updateUser {}", authorDTO.toString());
+            authorService.updateUser(id, authorDTO);
         } catch (UserNotFoundException e) {
-            logger.error("USER_CONTROLLER updateUser {}", userDTO.toString());
+            logger.error("USER_CONTROLLER updateUser {}", authorDTO.toString());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -73,7 +73,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
         try {
             logger.info("USER_CONTROLLER deleteUser {}", id);
-            userService.deleteUser(id);
+            authorService.deleteUser(id);
         } catch (UserNotFoundException e) {
             logger.error("USER_CONTROLLER deleteUser {}", id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

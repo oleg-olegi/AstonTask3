@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "author")
-public class User {
+public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -16,13 +16,13 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @OneToMany
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts; // OneToMany relationship
 
-    public User() {
+    public Author() {
     }
 
-    public User(String name, String mail) {
+    public Author(String name, String mail) {
         this.name = name;
         this.email = mail;
     }
@@ -58,4 +58,15 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", posts=" + posts +
+                '}';
+    }
+
 }
