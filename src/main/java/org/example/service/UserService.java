@@ -40,17 +40,29 @@ public class UserService {
                 .map(userMapper::toDTO)
                 .toList();
         if (userDTOList.isEmpty()) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("List is empty");
         }
         return userDTOList;
     }
+
     public void createUser(UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
+        if (user.getId() == null || user.getName() == null) {
+            throw new IllegalArgumentException("Users fields cannot be empty");
+        }
         userRepository.save(user);
     }
 
-    public void updateUser(UserDTO userDTO) {
-        User user = userMapper.toEntity(userDTO);
+    public void updateUser(long id, UserDTO userDTO) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
+                String.format("User with id '%s' not found", id))
+        );
+        if (userDTO.getName() != null) {
+            user.setName(userDTO.getName());
+        }
+        if (userDTO.getEmail() != null) {
+            user.setEmail(userDTO.getEmail());
+        }
         userRepository.save(user);
     }
 

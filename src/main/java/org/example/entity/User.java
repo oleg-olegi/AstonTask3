@@ -1,7 +1,6 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.processing.Pattern;
 
 import java.util.List;
 
