@@ -68,4 +68,16 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") long id) {
+        try {
+            logger.info("USER_CONTROLLER deleteUser {}", id);
+            userService.deleteUser(id);
+        } catch (UserNotFoundException e) {
+            logger.error("USER_CONTROLLER deleteUser {}", id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.noContent().build();
+    }
 }

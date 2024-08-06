@@ -30,7 +30,8 @@ public class UserService {
 
     public UserDTO getUserById(Long id) {
         logger.info(" SERVICE - getUserById");
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new UserNotFoundException(String.format("User with id %s not found", id)));
         logger.info(user.toString());
         return userMapper.toDTO(user);
     }
@@ -67,6 +68,10 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+        } else {
+            throw new UserNotFoundException(String.format("User with id '%s' not found", id));
+        }
     }
 }
