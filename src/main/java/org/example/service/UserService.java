@@ -29,18 +29,21 @@ public class UserService {
     }
 
     public UserDTO getUserById(Long id) {
-        logger.info("getUserById");
+        logger.info(" SERVICE - getUserById");
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         logger.info(user.toString());
         return userMapper.toDTO(user);
     }
 
     public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream()
+        List<UserDTO> userDTOList = userRepository.findAll().stream()
                 .map(userMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
+        if (userDTOList.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        return userDTOList;
     }
-
     public void createUser(UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
         userRepository.save(user);

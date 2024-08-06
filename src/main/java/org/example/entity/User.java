@@ -1,17 +1,20 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.processing.Pattern;
 
 import java.util.List;
 
 @Entity
+@Table(name = "author")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
-    @Column
+    @Column(name = "name")
     private String name;
-    @Column
+    @Column(name = "email")
     private String email;
 
     @OneToMany
@@ -49,4 +52,11 @@ public class User {
         this.posts = posts;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
