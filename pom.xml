@@ -19,7 +19,7 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version> 6.1.0</version>
+            <version>6.1.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -74,26 +74,23 @@
             <artifactId>spring-orm</artifactId>
             <version>6.1.10</version>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>6.5.2.Final</version>
         </dependency>
-
         <!-- JDBC Driver for PostgreSQL -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.3</version>
         </dependency>
-
         <!-- MapStruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version> 1.5.5.Final</version>
+            <version>1.5.5.Final</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -115,7 +112,6 @@
             <version>5.10.3</version>
             <scope>test</scope>
         </dependency>
-
         <!-- Mockito -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -123,7 +119,6 @@
             <version>5.11.0</version>
             <scope>test</scope>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -160,16 +155,66 @@
             <version>1.19.8</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+        <!-- Testcontainers core dependency -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>1.19.8</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.2.224</version>
+            <scope>test</scope>
+        </dependency>
 
+    </dependencies>
     <build>
         <finalName>AstonTask3</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.12</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>jcc-report</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <excludes>
+                            <exclude>org/example/exceptions/**</exclude>
+                            <exclude>org/example/entity/**</exclude>
+                            <exclude>org/example/dto/**</exclude>
+                            <exclude>org/example/mapper/**</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.13.0</version>
+                    <version>3.8.1</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
@@ -184,6 +229,11 @@
                             </path>
                         </annotationProcessorPaths>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.8.0.2131</version>
                 </plugin>
             </plugins>
         </pluginManagement>
