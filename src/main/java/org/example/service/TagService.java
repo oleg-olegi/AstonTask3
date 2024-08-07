@@ -26,8 +26,10 @@ public class TagService {
         return tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
     }
 
-    public List<Tag> getAllTags() {
-        return tagRepository.findAll();
+    public List<TagDTO> getAllTags() {
+        return tagRepository.findAll().stream()
+                .map(tagMapper::toDTO)
+                .toList();
     }
 
     public void addTag(TagDTO tagDTO) {

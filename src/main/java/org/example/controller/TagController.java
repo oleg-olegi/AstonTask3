@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import org.example.dto.TagDTO;
-import org.example.entity.Tag;
 import org.example.exceptions.TagNotFoundException;
 import org.example.service.TagService;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,7 @@ public class TagController {
 
     @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<?> getAllTags() {
-        List<Tag> tags = tagService.getAllTags();
+        List<TagDTO> tags = tagService.getAllTags();
         return ResponseEntity.status(HttpStatus.OK).body(tags);
     }
 
