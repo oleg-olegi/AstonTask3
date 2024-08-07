@@ -1,12 +1,9 @@
 package org.example.service;
 
 import org.example.dto.PostDTO;
-import org.example.entity.Author;
 import org.example.entity.Post;
 import org.example.exceptions.PostNotFoundException;
-import org.example.exceptions.UserNotFoundException;
 import org.example.mapper.PostMapper;
-import org.example.repository.AuthorRepository;
 import org.example.repository.PostRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +20,10 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PostMapper postMapper;
-    private final AuthorRepository authorRepository;
 
-    public PostService(PostRepository postRepository, PostMapper postMapper, AuthorRepository authorRepository) {
+    public PostService(PostRepository postRepository, PostMapper postMapper) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
-        this.authorRepository = authorRepository;
     }
 
     public PostDTO getPostById(Long id) {
@@ -50,12 +45,7 @@ public class PostService {
     }
 
     public void createPost(PostDTO postDTO) {
-//        Author author = authorRepository.findById(postDTO.getAuthorId()).orElseThrow(
-//                () -> new UserNotFoundException(String.format("Author with id %s not found", postDTO.getAuthorId()))
-//        );
-//        logger.info("AUTHOR {}", author.toString());
         Post post = postMapper.toEntity(postDTO);
-//        post.setAuthor(author);
         logger.info("CREATE_POST {}", post.toString());
         if (post.getContent() == null || post.getTitle() == null) {
             throw new IllegalArgumentException("Posts fields cannot be empty");
