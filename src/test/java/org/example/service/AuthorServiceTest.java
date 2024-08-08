@@ -90,7 +90,7 @@ class AuthorServiceTest {
 
     @Test
     void getAllUsers_ShouldThrowException_WhenNoUsersExist() {
-        when(authorRepository.findAll()).thenReturn(Arrays.asList());
+        when(authorRepository.findAll()).thenReturn(List.of());
 
         assertThrows(UserNotFoundException.class, () -> authorService.getAllUsers());
     }
@@ -119,6 +119,108 @@ class AuthorServiceTest {
 
         when(authorMapper.toEntity(authorDTO)).thenReturn(author);
         assertThrows(IllegalArgumentException.class, () -> authorService.createUser(authorDTO));
+    }
+
+    @Test
+    public void testUpdateUser_AllFieldsUpdated() {
+        long authorId = 1L;
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName("New Name");
+        authorDTO.setEmail("new.email@example.com");
+
+        Author author = new Author();
+        author.setId(authorId);
+        author.setName("Old Name");
+        author.setEmail("old.email@example.com");
+
+        when(authorRepository.findById(authorId)).thenReturn(Optional.of(author));
+
+        authorService.updateUser(authorId, authorDTO);
+
+        assertEquals("New Name", author.getName());
+        assertEquals("new.email@example.com", author.getEmail());
+        verify(authorRepository).findById(authorId);
+        verify(authorRepository).save(author);
+    }
+
+    @Test
+    public void testUpdateUser_NameUpdatedOnly() {
+        long authorId = 1L;
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName("New Name");
+        authorDTO.setEmail(null);
+
+        Author author = new Author();
+        author.setId(authorId);
+        author.setName("Old Name");
+        author.setEmail("old.email@example.com");
+
+        when(authorRepository.findById(authorId)).thenReturn(Optional.of(author));
+
+        authorService.updateUser(authorId, authorDTO);
+
+        assertEquals("New Name", author.getName());
+        assertEquals("old.email@example.com", author.getEmail());
+        verify(authorRepository).findById(authorId);
+        verify(authorRepository).save(author);
+    }
+
+    @Test
+    public void testUpdateUser_EmailUpdatedOnly() {
+        long authorId = 1L;
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName(null);
+        authorDTO.setEmail("new.email@example.com");
+
+        Author author = new Author();
+        author.setId(authorId);
+        author.setName("Old Name");
+        author.setEmail("old.email@example.com");
+
+        when(authorRepository.findById(authorId)).thenReturn(Optional.of(author));
+
+        authorService.updateUser(authorId, authorDTO);
+
+        assertEquals("Old Name", author.getName());
+        assertEquals("new.email@example.com", author.getEmail());
+        verify(authorRepository).findById(authorId);
+        verify(authorRepository).save(author);
+    }
+
+    @Test
+    public void testUpdateUser_NoFieldsUpdated() {
+        long authorId = 1L;
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName(null);
+        authorDTO.setEmail(null);
+
+        Author author = new Author();
+        author.setId(authorId);
+        author.setName("Old Name");
+        author.setEmail("old.email@example.com");
+
+        when(authorRepository.findById(authorId)).thenReturn(Optional.of(author));
+
+        authorService.updateUser(authorId, authorDTO);
+
+        assertEquals("Old Name", author.getName());
+        assertEquals("old.email@example.com", author.getEmail());
+        verify(authorRepository).findById(authorId);
+        verify(authorRepository).save(author);
+    }
+
+    @Test
+    public void testUpdateUser_NotFound() {
+        long authorId = 1L;
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName("New Name");
+        authorDTO.setEmail("new.email@example.com");
+
+        when(authorRepository.findById(authorId)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> authorService.updateUser(authorId, authorDTO));
+        verify(authorRepository).findById(authorId);
+        verify(authorRepository, never()).save(any(Author.class));
     }
 
     @Test
@@ -171,5 +273,68 @@ class AuthorServiceTest {
         when(authorRepository.findById(userId)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> authorService.deleteUser(userId));
+    }
+
+    @Test
+    public void testCreateUser_NullEmail() {
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName("John Doe");
+        authorDTO.setEmail(null);
+
+        Author author = new Author();
+        author.setName("John Doe");
+        author.setEmail(null);
+
+        when(authorMapper.toEntity(authorDTO)).thenReturn(author);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            authorService.createUser(authorDTO);
+        });
+
+        assertEquals("Users fields cannot be empty", exception.getMessage());
+        verify(authorMapper).toEntity(authorDTO);
+        verify(authorRepository, never()).save(any(Author.class));
+    }
+
+    @Test
+    public void testCreateUser_NullName() {
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName(null);
+        authorDTO.setEmail("john.doe@example.com");
+
+        Author author = new Author();
+        author.setName(null);
+        author.setEmail("john.doe@example.com");
+
+        when(authorMapper.toEntity(authorDTO)).thenReturn(author);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            authorService.createUser(authorDTO);
+        });
+
+        assertEquals("Users fields cannot be empty", exception.getMessage());
+        verify(authorMapper).toEntity(authorDTO);
+        verify(authorRepository, never()).save(any(Author.class));
+    }
+
+    @Test
+    public void testCreateUser_NullNameAndEmail() {
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setName(null);
+        authorDTO.setEmail(null);
+
+        Author author = new Author();
+        author.setName(null);
+        author.setEmail(null);
+
+        when(authorMapper.toEntity(authorDTO)).thenReturn(author);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            authorService.createUser(authorDTO);
+        });
+
+        assertEquals("Users fields cannot be empty", exception.getMessage());
+        verify(authorMapper).toEntity(authorDTO);
+        verify(authorRepository, never()).save(any(Author.class));
     }
 }
