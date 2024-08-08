@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,7 +39,7 @@ public class AuthorService {
     public List<AuthorDTO> getAllUsers() {
         List<AuthorDTO> authorDTOList = authorRepository.findAll().stream()
                 .map(authorMapper::toDTO)
-                .toList();
+                .collect(Collectors.toList());
         if (authorDTOList.isEmpty()) {
             throw new UserNotFoundException("List is empty");
         }

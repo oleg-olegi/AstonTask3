@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -37,7 +38,7 @@ public class PostService {
     public List<PostDTO> getAllPosts() {
         List<PostDTO> postDTOList = postRepository.findAll().stream()
                 .map(postMapper::toDTO)
-                .toList();
+                .collect(Collectors.toList());
         if (postDTOList.isEmpty()) {
             throw new PostNotFoundException("List is empty");
         }
