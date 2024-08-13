@@ -22,9 +22,12 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Properties;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringJUnitConfig(AuthorRepositoryTest.Config.class)
 @Testcontainers
@@ -33,7 +36,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class AuthorRepositoryTest {
 
     @Container
-    public static PostgreSQLContainer<?> postgresContainer =  new PostgreSQLContainer<>("postgres:latest")
+    public static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>("postgres:latest")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpass");
@@ -121,5 +124,101 @@ public class AuthorRepositoryTest {
         assertThat(foundAuthor.getName()).isEqualTo("John Doe");
 
         context.close();
+    }
+
+    @Test
+    void getByIdTest() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+        authorRepository = context.getBean(AuthorRepository.class);
+
+        Author author1 = new Author();
+        author1.setId(1L);
+        author1.setName("John Connor");
+        authorRepository.save(author1);
+
+        Author author2 = new Author();
+        author2.setId(2L);
+        author2.setName("Sarah Connor");
+        authorRepository.save(author2);
+
+        Author foundAuthor1 = authorRepository.findById(1L).orElse(null);
+        Author foundAuthor2 = authorRepository.findById(2L).orElse(null);
+        Author foundAuthor3 = authorRepository.findById(3L).orElse(null);
+        assertThat(foundAuthor1).isNotNull();
+        assertThat(foundAuthor2).isNotNull();
+        assertThat(foundAuthor3).isNull();
+        assert foundAuthor1 != null;
+        assert foundAuthor2 != null;
+        assert foundAuthor3 == null;
+        assertThat("John Connor").isEqualTo(foundAuthor1.getName());
+        assertThat("Sarah Connor").isEqualTo(foundAuthor2.getName());
+    }
+
+    @Test
+    void getAllTest() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+        authorRepository = context.getBean(AuthorRepository.class);
+
+        Author author1 = new Author();
+        author1.setId(1L);
+        author1.setName("John Connor");
+        authorRepository.save(author1);
+
+        Author author2 = new Author();
+        author2.setId(2L);
+        author2.setName("Sarah Connor");
+        authorRepository.save(author2);
+
+        List<Author> authors = authorRepository.findAll();
+
+        assertFalse(authors.isEmpty());
+        assertEquals(2, authors.size());
+    }
+
+    @Test
+    void deleteByIdTest() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+        authorRepository = context.getBean(AuthorRepository.class);
+        Author author1 = new Author();
+        author1.setId(1L);
+        author1.setName("John Connor");
+        authorRepository.save(author1);
+        Author author2 = new Author();
+        author2.setId(2L);
+        author2.setName("Sarah Connor");
+        authorRepository.save(author2);
+
+        List<Author> authors = authorRepository.findAll();
+        assertFalse(authors.isEmpty());
+        assertEquals(2, authors.size());
+
+        authorRepository.deleteById(1L);
+        authors = authorRepository.findAll();
+        assertEquals(1, authors.size());
+        assertTrue(authorRepository.findById(1L).isEmpty());
+    }
+
+    @Test
+    void updateTest() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+        authorRepository = context.getBean(AuthorRepository.class);
+
+        Author author1 = new Author();
+        author1.setId(1L);
+        author1.setName("John Connor");
+        authorRepository.save(author1);
+
+        Author author2 = new Author();
+        author2.setId(2L);
+        author2.setName("Sarah Connor");
+        authorRepository.save(author2);
+
+        Author foundedAuthor = authorRepository.findById(1L).orElse(null);
+        assert foundedAuthor != null;
+        foundedAuthor.setName("Sam Connor");
+        authorRepository.save(foundedAuthor);
+
+        assert authorRepository.findById(1L).isPresent();
+        assertEquals("Sam Connor", authorRepository.findById(1L).get().getName());
     }
 }
