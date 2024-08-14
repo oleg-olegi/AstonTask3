@@ -8,7 +8,7 @@ import java.util.List;
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Column
     private String name;
     @ManyToMany(mappedBy = "tags")
@@ -27,6 +27,10 @@ public class Tag {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public List<Post> getPosts() {
