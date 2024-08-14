@@ -1,8 +1,6 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-import org.example.entity.Author;
-import org.example.entity.Tag;
 
 import java.util.List;
 import java.util.Objects;

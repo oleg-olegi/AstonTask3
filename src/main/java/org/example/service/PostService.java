@@ -31,8 +31,7 @@ public class PostService {
         logger.info(" SERVICE - getPostById");
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new PostNotFoundException(String.format("Post with id %s not found", id)));
-        logger.info(post.toString());
-        return postMapper.toDTO(post);
+                return postMapper.toDTO(post);
     }
 
     public List<PostDTO> getAllPosts() {
@@ -47,7 +46,7 @@ public class PostService {
 
     public void createPost(PostDTO postDTO) {
         Post post = postMapper.toEntity(postDTO);
-        logger.info("CREATE_POST {}", post.toString());
+        logger.info("CREATE_POST {}", post);
         if (post.getContent() == null || post.getTitle() == null) {
             throw new IllegalArgumentException("Posts fields cannot be empty");
         }

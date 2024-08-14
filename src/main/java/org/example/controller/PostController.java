@@ -27,9 +27,9 @@ public class PostController {
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<?> getPostById(@PathVariable("id") long id) {
         try {
-            PostDTO PostDTO = postService.getPostById(id);
-            logger.info("Post_CONTROLLER getPostById {}", PostDTO.toString());
-            return ResponseEntity.ok(PostDTO);
+            PostDTO postDTO = postService.getPostById(id);
+            logger.info("Post_CONTROLLER getPostById {}", postDTO);
+            return ResponseEntity.ok(postDTO);
         } catch (PostNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -38,9 +38,9 @@ public class PostController {
     @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<?> getAllPosts() {
         try {
-            List<PostDTO> PostDTO = postService.getAllPosts();
+            List<PostDTO> postDTO = postService.getAllPosts();
             logger.info("Post_CONTROLLER getAllPosts");
-            return ResponseEntity.ok(PostDTO);
+            return ResponseEntity.ok(postDTO);
         } catch (PostNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -49,11 +49,11 @@ public class PostController {
     @PostMapping(consumes = "application/json")
     public ResponseEntity<?> createPost(@RequestBody PostDTO postDTO) {
         try {
-            logger.info("Post_CONTROLLER BEFORE createPost {}", postDTO.toString());
+            logger.info("Post_CONTROLLER BEFORE createPost {}", postDTO);
             postService.createPost(postDTO);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (PostNotFoundException e) {
-            logger.error("Post_CONTROLLER createPost {}", postDTO.toString());
+            logger.error("Post_CONTROLLER createPost {}", postDTO);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
@@ -61,10 +61,10 @@ public class PostController {
     @PutMapping(value = "/update/{id}", consumes = "application/json")
     public ResponseEntity<?> updatePost(@PathVariable("id") long id, @RequestBody PostDTO postDTO) {
         try {
-            logger.info("Post_CONTROLLER updatePost {}", postDTO.toString());
+            logger.info("Post_CONTROLLER updatePost {}", postDTO);
             postService.updatePost(id, postDTO);
         } catch (PostNotFoundException e) {
-            logger.error("Post_CONTROLLER updatePost {}", postDTO.toString());
+            logger.error("Post_CONTROLLER updatePost {}", postDTO);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();

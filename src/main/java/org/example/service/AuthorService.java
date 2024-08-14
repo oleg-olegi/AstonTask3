@@ -32,7 +32,6 @@ public class AuthorService {
         logger.info(" SERVICE - getUserById");
         Author author = authorRepository.findById(id).orElseThrow(() ->
                 new UserNotFoundException(String.format("User with id %s not found", id)));
-        logger.info(author.toString());
         return authorMapper.toDTO(author);
     }
 

@@ -27,7 +27,7 @@ public class AuthorController {
     public ResponseEntity<?> getUserById(@PathVariable("id") long id) {
         try {
             AuthorDTO authorDTO = authorService.getUserById(id);
-            logger.info("USER_CONTROLLER getUserById {}", authorDTO.toString());
+            logger.info("USER_CONTROLLER getUserById {}", authorDTO);
             return ResponseEntity.ok(authorDTO);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -49,10 +49,10 @@ public class AuthorController {
     public ResponseEntity<?> createUser(@RequestBody AuthorDTO authorDTO) {
         try {
             authorService.createUser(authorDTO);
-            logger.info("USER_CONTROLLER createUser {}", authorDTO.toString());
+            logger.info("USER_CONTROLLER createUser {}", authorDTO);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (UserNotFoundException e) {
-            logger.error("USER_CONTROLLER createUser {}", authorDTO.toString());
+            logger.error("USER_CONTROLLER createUser {}", authorDTO);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
@@ -60,10 +60,10 @@ public class AuthorController {
     @PutMapping(value = "/update/{id}", consumes = "application/json")
     public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody AuthorDTO authorDTO) {
         try {
-            logger.info("USER_CONTROLLER updateUser {}", authorDTO.toString());
+            logger.info("USER_CONTROLLER updateUser {}", authorDTO);
             authorService.updateUser(id, authorDTO);
         } catch (UserNotFoundException e) {
-            logger.error("USER_CONTROLLER updateUser {}", authorDTO.toString());
+            logger.error("USER_CONTROLLER updateUser {}", authorDTO);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
