@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringJUnitConfig(DBConfigurationClass.class)
 @ComponentScan(basePackages = "org.example.repository")
-public class PostRepositoryTest {
+ class PostRepositoryTest {
     @Autowired
     private PostRepository postRepository;
 

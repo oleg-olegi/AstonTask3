@@ -34,14 +34,15 @@ public class TagService {
     }
 
     /**
-     * Retrieves a Tag by its ID.
+     * Retrieves a TagDTO by its ID.
      *
      * @param id ID of the Tag to be retrieved.
-     * @return The Tag entity.
+     * @return The TagDTO object.
      * @throws RuntimeException if the Tag is not found.
      */
-    public Tag getTag(long id) {
-        return tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
+    public TagDTO getTag(long id) {
+        Tag tag = tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
+        return tagMapper.toDTO(tag);
     }
 
     /**

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-public class AuthorControllerTest {
+class AuthorControllerTest {
 
     @InjectMocks
     private AuthorController authorController;
@@ -88,9 +88,9 @@ public class AuthorControllerTest {
 
     @Test
     void testCreateUserBadRequest() throws UserNotFoundException {
-        AuthorDTO authorDTO = new AuthorDTO(1L, "Author Name", "email");
+        AuthorDTO authorDTO = new AuthorDTO(1L, null, null);
 
-        doThrow(new UserNotFoundException("User already exists")).when(authorService).createUser(authorDTO);
+        doThrow(new IllegalArgumentException("User fields cannot be empty")).when(authorService).createUser(authorDTO);
 
         ResponseEntity<?> responseEntity = authorController.createUser(authorDTO);
         assertNotNull(responseEntity);
@@ -105,7 +105,7 @@ public class AuthorControllerTest {
 
         ResponseEntity<?> responseEntity = authorController.updateUser(1L, authorDTO);
         assertNotNull(responseEntity);
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringJUnitConfig(DBConfigurationClass.class)
 @ComponentScan(basePackages = "org.example.repository")
-public class TagRepositoryTest {
+ class TagRepositoryTest {
     @Autowired
     private TagRepository tagRepository;
 
@@ -99,11 +99,11 @@ public class TagRepositoryTest {
         Long id = tag1.getId();
 
         tagRepository.deleteById(id);
-        Tag TagAfterDelete = tagRepository.findById(id).orElse(null);
-        Assertions.assertNull(TagAfterDelete);
+        Tag tagAfterDelete = tagRepository.findById(id).orElse(null);
+        Assertions.assertNull(tagAfterDelete);
 
-        List<Tag> TagsAfterDelete = tagRepository.findAll();
-        assertEquals(1, TagsAfterDelete.size());
+        List<Tag> tagsAfterDelete = tagRepository.findAll();
+        assertEquals(1, tagsAfterDelete.size());
     }
 
     @Test

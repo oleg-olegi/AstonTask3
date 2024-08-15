@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-public class PostControllerTest {
+class PostControllerTest {
 
     @InjectMocks
     private PostController postController;
@@ -88,9 +88,9 @@ public class PostControllerTest {
 
     @Test
     void testCreatePostBadRequest() throws PostNotFoundException {
-        PostDTO postDTO = new PostDTO(1L, "New Post Title", "New Post Content", 1L);
+        PostDTO postDTO = new PostDTO(1L, null, null, 1L);
 
-        doThrow(new PostNotFoundException("Post already exists")).when(postService).createPost(postDTO);
+        doThrow(new IllegalArgumentException("Post fields cannot be empty")).when(postService).createPost(postDTO);
 
         ResponseEntity<?> responseEntity = postController.createPost(postDTO);
         assertNotNull(responseEntity);
@@ -105,7 +105,7 @@ public class PostControllerTest {
 
         ResponseEntity<?> responseEntity = postController.updatePost(1L, postDTO);
         assertNotNull(responseEntity);
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test

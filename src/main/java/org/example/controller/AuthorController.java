@@ -92,7 +92,7 @@ public class AuthorController {
      *
      * @param id        ID of the Author to be updated.
      * @param authorDTO Data Transfer Object containing updated Author data.
-     * @return ResponseEntity with a 201 Created status if the Author is successfully updated, or a 404 Not Found status if the Author with the specified ID is not found.
+     * @return ResponseEntity with a 200 Ok status if the Author is successfully updated, or a 404 Not Found status if the Author with the specified ID is not found.
      */
     @PutMapping(value = "/update/{id}", consumes = "application/json")
     public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody AuthorDTO authorDTO) {

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-public class TagControllerTest {
+class TagControllerTest {
 
     @InjectMocks
     private TagController tagController;
@@ -47,7 +47,9 @@ public class TagControllerTest {
 
     @Test
     void testGetTagById() throws TagNotFoundException {
-        TagDTO tag = new TagDTO(1L, "tag1");
+        TagDTO tagDTO = new TagDTO(1L, "tag1");
+
+        when(tagService.getTag(1L)).thenReturn(tagDTO);
 
         ResponseEntity<?> responseEntity = tagController.getTagById(1L);
         assertNotNull(responseEntity);

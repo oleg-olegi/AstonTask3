@@ -1,4 +1,5 @@
 package org.example.service;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -16,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.Optional;
 
-public class TagServiceTest {
+class TagServiceTest {
 
     @Mock
     private TagRepository tagRepository;
@@ -33,19 +34,23 @@ public class TagServiceTest {
     }
 
     @Test
-    public void testGetTag() {
+    void testGetTag() {
         long tagId = 1L;
-        Tag tag = new Tag();
-        when(tagRepository.findById(tagId)).thenReturn(Optional.of(tag));
+        Tag tag = new Tag("TestName");
+        TagDTO expectedTagDTO = new TagDTO(1L, "TestName");
 
-        Tag result = tagService.getTag(tagId);
+        when(tagRepository.findById(tagId)).thenReturn(Optional.of(tag));
+        when(tagMapper.toDTO(tag)).thenReturn(expectedTagDTO);
+
+        TagDTO result = tagService.getTag(tagId);
 
         assertNotNull(result);
+        assertEquals(expectedTagDTO, result);
         verify(tagRepository).findById(tagId);
+        verify(tagMapper).toDTO(tag);
     }
-
     @Test
-    public void testGetTag_NotFound() {
+    void testGetTag_NotFound() {
         long tagId = 1L;
         when(tagRepository.findById(tagId)).thenReturn(Optional.empty());
 
@@ -53,7 +58,7 @@ public class TagServiceTest {
     }
 
     @Test
-    public void testGetAllTags() {
+    void testGetAllTags() {
         Tag tag = new Tag();
         TagDTO tagDTO = new TagDTO();
         when(tagRepository.findAll()).thenReturn(List.of(tag));
@@ -68,7 +73,7 @@ public class TagServiceTest {
     }
 
     @Test
-    public void testAddTag() {
+    void testAddTag() {
         TagDTO tagDTO = new TagDTO();
         Tag tag = new Tag();
         when(tagMapper.toEntity(tagDTO)).thenReturn(tag);
@@ -80,7 +85,7 @@ public class TagServiceTest {
     }
 
     @Test
-    public void testUpdateTag() {
+    void testUpdateTag() {
         long tagId = 1L;
         TagDTO tagDTO = new TagDTO();
         Tag tag = new Tag();
@@ -93,7 +98,7 @@ public class TagServiceTest {
     }
 
     @Test
-    public void testUpdateTag_NotFound() {
+    void testUpdateTag_NotFound() {
         long tagId = 1L;
         TagDTO tagDTO = new TagDTO();
         when(tagRepository.findById(tagId)).thenReturn(Optional.empty());
@@ -102,7 +107,7 @@ public class TagServiceTest {
     }
 
     @Test
-    public void testDeleteTag() {
+    void testDeleteTag() {
         long tagId = 1L;
 
         tagService.deleteTag(tagId);

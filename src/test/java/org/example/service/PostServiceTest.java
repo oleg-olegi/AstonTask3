@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 import java.util.List;
 
-public class PostServiceTest {
+class PostServiceTest {
 
     @Mock
     private PostRepository postRepository;
@@ -34,7 +34,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testGetPostById() {
+     void testGetPostById() {
         Long postId = 1L;
         Post post = new Post();
         PostDTO postDTO = new PostDTO();
@@ -49,7 +49,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testGetPostById_NotFound() {
+    void testGetPostById_NotFound() {
         Long postId = 1L;
         when(postRepository.findById(postId)).thenReturn(Optional.empty());
 
@@ -57,7 +57,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testGetAllPosts() {
+    void testGetAllPosts() {
         Post post = new Post();
         PostDTO postDTO = new PostDTO();
         when(postRepository.findAll()).thenReturn(List.of(post));
@@ -72,14 +72,14 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testGetAllPosts_EmptyList() {
+    void testGetAllPosts_EmptyList() {
         when(postRepository.findAll()).thenReturn(List.of());
 
         assertThrows(PostNotFoundException.class, () -> postService.getAllPosts());
     }
 
     @Test
-    public void testCreatePost() {
+    void testCreatePost() {
         PostDTO postDTO = new PostDTO(1L, "title", "content", 1L);
 
         Post post = new Post();
@@ -95,7 +95,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testCreatePostWithEmptyFields() {
+    void testCreatePostWithEmptyFields() {
         PostDTO postDTO = new PostDTO();
         Post post = new Post();
         when(postMapper.toEntity(postDTO)).thenReturn(post);
@@ -104,7 +104,7 @@ public class PostServiceTest {
 
 
     @Test
-    public void testUpdatePost() {
+    void testUpdatePost() {
         Long postId = 1L;
         PostDTO postDTO = new PostDTO(1L, "title", "content", 1L);
         Post post = new Post();
@@ -124,7 +124,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testUpdatePostWithNotNullFields() {
+    void testUpdatePostWithNotNullFields() {
         Long postId = 1L;
         PostDTO postDTO = new PostDTO();
         Post post = new Post();
@@ -137,7 +137,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testUpdatePost_NotFound() {
+    void testUpdatePost_NotFound() {
         long postId = 1L;
         PostDTO postDTO = new PostDTO();
         when(postRepository.findById(postId)).thenReturn(Optional.empty());
@@ -146,7 +146,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testDeletePost() {
+    void testDeletePost() {
         Long postId = 1L;
         when(postRepository.findById(postId)).thenReturn(Optional.of(new Post()));
 
@@ -157,7 +157,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testDeletePost_NotFound() {
+    void testDeletePost_NotFound() {
         Long postId = 1L;
         when(postRepository.findById(postId)).thenReturn(Optional.empty());
 

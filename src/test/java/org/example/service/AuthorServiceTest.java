@@ -122,7 +122,7 @@ class AuthorServiceTest {
     }
 
     @Test
-    public void testUpdateUser_AllFieldsUpdated() {
+    void testUpdateUser_AllFieldsUpdated() {
         long authorId = 1L;
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setName("New Name");
@@ -144,7 +144,7 @@ class AuthorServiceTest {
     }
 
     @Test
-    public void testUpdateUser_NameUpdatedOnly() {
+    void testUpdateUser_NameUpdatedOnly() {
         long authorId = 1L;
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setName("New Name");
@@ -166,7 +166,7 @@ class AuthorServiceTest {
     }
 
     @Test
-    public void testUpdateUser_EmailUpdatedOnly() {
+    void testUpdateUser_EmailUpdatedOnly() {
         long authorId = 1L;
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setName(null);
@@ -188,7 +188,7 @@ class AuthorServiceTest {
     }
 
     @Test
-    public void testUpdateUser_NoFieldsUpdated() {
+    void testUpdateUser_NoFieldsUpdated() {
         long authorId = 1L;
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setName(null);
@@ -210,7 +210,7 @@ class AuthorServiceTest {
     }
 
     @Test
-    public void testUpdateUser_NotFound() {
+    void testUpdateUser_NotFound() {
         long authorId = 1L;
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setName("New Name");
@@ -276,7 +276,7 @@ class AuthorServiceTest {
     }
 
     @Test
-    public void testCreateUser_NullEmail() {
+    void testCreateUser_NullEmail() {
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setName("John Doe");
         authorDTO.setEmail(null);
@@ -291,13 +291,13 @@ class AuthorServiceTest {
             authorService.createUser(authorDTO);
         });
 
-        assertEquals("Users fields cannot be empty", exception.getMessage());
+        assertEquals("User fields cannot be empty", exception.getMessage());
         verify(authorMapper).toEntity(authorDTO);
         verify(authorRepository, never()).save(any(Author.class));
     }
 
     @Test
-    public void testCreateUser_NullName() {
+    void testCreateUser_NullName() {
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setName(null);
         authorDTO.setEmail("john.doe@example.com");
@@ -312,13 +312,13 @@ class AuthorServiceTest {
             authorService.createUser(authorDTO);
         });
 
-        assertEquals("Users fields cannot be empty", exception.getMessage());
+        assertEquals("User fields cannot be empty", exception.getMessage());
         verify(authorMapper).toEntity(authorDTO);
         verify(authorRepository, never()).save(any(Author.class));
     }
 
     @Test
-    public void testCreateUser_NullNameAndEmail() {
+    void testCreateUser_NullNameAndEmail() {
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setName(null);
         authorDTO.setEmail(null);
@@ -333,7 +333,7 @@ class AuthorServiceTest {
             authorService.createUser(authorDTO);
         });
 
-        assertEquals("Users fields cannot be empty", exception.getMessage());
+        assertEquals("User fields cannot be empty", exception.getMessage());
         verify(authorMapper).toEntity(authorDTO);
         verify(authorRepository, never()).save(any(Author.class));
     }
