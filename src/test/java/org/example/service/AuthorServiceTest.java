@@ -287,9 +287,8 @@ class AuthorServiceTest {
 
         when(authorMapper.toEntity(authorDTO)).thenReturn(author);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            authorService.createUser(authorDTO);
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> authorService.createUser(authorDTO));
 
         assertEquals("User fields cannot be empty", exception.getMessage());
         verify(authorMapper).toEntity(authorDTO);
@@ -308,9 +307,8 @@ class AuthorServiceTest {
 
         when(authorMapper.toEntity(authorDTO)).thenReturn(author);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            authorService.createUser(authorDTO);
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> authorService.createUser(authorDTO));
 
         assertEquals("User fields cannot be empty", exception.getMessage());
         verify(authorMapper).toEntity(authorDTO);
@@ -329,9 +327,8 @@ class AuthorServiceTest {
 
         when(authorMapper.toEntity(authorDTO)).thenReturn(author);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            authorService.createUser(authorDTO);
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> authorService.createUser(authorDTO));
 
         assertEquals("User fields cannot be empty", exception.getMessage());
         verify(authorMapper).toEntity(authorDTO);
